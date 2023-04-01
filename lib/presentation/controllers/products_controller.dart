@@ -13,20 +13,39 @@ class ProductsController extends GetxController {
   final _products = <Product>[];
   final filteredProducts = <Product>[].obs;
   Rx<ViewStatus> viewStatus = ViewStatus.loading.obs;
+  RxInt minPrice = 0.obs;
 
   @override
   void onInit() async {
     super.onInit();
 
+    await fetchProducts();
+  }
+
+  Future<void> fetchProducts() async {
     final products = await _productRemote.getProducts();
     _products.addAll(products);
 
-    filteredProducts.addAll(_products);
-
-    viewStatus.value = ViewStatus.idle;
+    filterProducts();
   }
 
   void addProductToCart(Product product) async {
     await _cartCache.addItem(product);
+  }
+
+  void updateMinPrice(int value) {
+    minPrice.value = value;
+
+    filterProducts();
+  }
+
+  void filterProducts() {
+    viewStatus.value = ViewStatus.loading;
+
+    final newProducts =
+        _products.where((e) => e.price > minPrice.value).toList();
+    filteredProducts.value = [...newProducts];
+
+    viewStatus.value = ViewStatus.idle;
   }
 }

@@ -6,5 +6,8 @@ const Map<String, String> en_US = {
   'your_cart': 'Your Cart',
   'cart_add': 'Add to Cart',
   'total': 'Total',
-  'checkout': 'Checkout'
+  'checkout': 'Checkout',
+  'filter_min_price': 'Min Price',
+  'filter_reset': 'Reset filter',
+  'apply': 'Apply',
 };
