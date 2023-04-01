@@ -1,5 +1,6 @@
 import 'package:cart_app/domain/interfaces/caches/cart_cache.dart';
 import 'package:cart_app/domain/interfaces/remotes/product_remote.dart';
+import 'package:cart_app/domain/models/cart_item.dart';
 import 'package:cart_app/domain/models/product.dart';
 import 'package:cart_app/shared/global_variables.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ class ProductsController extends GetxController {
   // States
   final _products = <Product>[];
   final filteredProducts = <Product>[].obs;
+  final cartItems = <CartItem>[].obs;
   Rx<ViewStatus> viewStatus = ViewStatus.loading.obs;
   RxInt minPrice = 0.obs;
 
@@ -19,10 +21,12 @@ class ProductsController extends GetxController {
   void onInit() async {
     super.onInit();
 
-    await fetchProducts();
+    fetchProducts();
+
+    getCartItems();
   }
 
-  Future<void> fetchProducts() async {
+  void fetchProducts() async {
     final products = await _productRemote.getProducts();
     _products.addAll(products);
 
@@ -31,6 +35,8 @@ class ProductsController extends GetxController {
 
   void addProductToCart(Product product) async {
     await _cartCache.addItem(product);
+
+    getCartItems();
   }
 
   void updateMinPrice(int value) {
@@ -50,5 +56,10 @@ class ProductsController extends GetxController {
     filteredProducts.value = [...newProducts];
 
     viewStatus.value = ViewStatus.idle;
+  }
+
+  void getCartItems() async {
+    final cartItemsFromCache = await _cartCache.getItems();
+    cartItems.value = [...cartItemsFromCache];
   }
 }

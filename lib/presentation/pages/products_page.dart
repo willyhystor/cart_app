@@ -21,7 +21,25 @@ class ProductsPage extends GetView<ProductsController> {
             const SizedBox(width: 20),
             GestureDetector(
               onTap: () {},
-              child: const Icon(Icons.shopping_cart),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Icon(Icons.shopping_cart),
+                  if (controller.cartItems.isNotEmpty)
+                    Positioned(
+                      left: 8,
+                      top: 8,
+                      child: CircleAvatar(
+                        radius: 8,
+                        backgroundColor: Colors.red,
+                        child: Text(
+                          controller.cartItems.length.toString(),
+                          style: const TextStyle(fontSize: 8),
+                        ),
+                      ),
+                    )
+                ],
+              ),
             ),
             const SizedBox(width: 20),
           ],
