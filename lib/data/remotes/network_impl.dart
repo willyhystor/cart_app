@@ -1,4 +1,4 @@
-import 'package:cart_app/domain/interfaces/network.dart';
+import 'package:cart_app/domain/interfaces/remotes/network.dart';
 import 'package:cart_app/shared/global_variables.dart';
 import 'package:dio/dio.dart';
 

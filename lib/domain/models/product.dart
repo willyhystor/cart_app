@@ -1,4 +1,5 @@
 class Product {
+  static const String key = 'product';
   static const String keyId = 'id';
   static const String keyTitle = 'title';
   static const String keyDescription = 'description';
@@ -37,7 +38,7 @@ class Product {
     required this.images,
   });
 
-  static Product fromAPI(Map<String, dynamic> map) {
+  static Product fromMap(Map<String, dynamic> map) {
     final images = <String>[];
 
     for (final imageString in map[keyImages]) {
@@ -57,5 +58,21 @@ class Product {
       thumbnail: map[keyThumbnail],
       images: images,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      keyId: id,
+      keyTitle: title,
+      keyDescription: description,
+      keyPrice: price,
+      keyDiscountPercentage: discountPercentage,
+      keyRating: rating,
+      keyStock: stock,
+      keyBrand: brand,
+      keyCategory: category,
+      keyThumbnail: thumbnail,
+      keyImages: images,
+    };
   }
 }

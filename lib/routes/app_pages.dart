@@ -11,7 +11,7 @@ class AppPages {
     GetPage(
       name: Routes.products,
       binding: ProductsBindings(),
-      page: () => ProductsPage(),
+      page: () => const ProductsPage(),
     ),
   ];
 }

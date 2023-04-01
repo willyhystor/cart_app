@@ -1,5 +1,5 @@
-import 'package:cart_app/domain/interfaces/network.dart';
-import 'package:cart_app/domain/interfaces/product_remote.dart';
+import 'package:cart_app/domain/interfaces/remotes/network.dart';
+import 'package:cart_app/domain/interfaces/remotes/product_remote.dart';
 import 'package:cart_app/domain/models/product.dart';
 import 'package:cart_app/shared/global_variables.dart';
 import 'package:cart_app/shared/remote_constants.dart';
@@ -16,7 +16,7 @@ class ProductRemoteImpl implements IProductRemote {
     final products = <Product>[];
 
     for (final productMap in response.data['products']) {
-      products.add(Product.fromAPI(productMap));
+      products.add(Product.fromMap(productMap));
     }
 
     return products;
