@@ -41,8 +41,8 @@ class CartCacheImpl implements ICartCache {
 
   @override
   Future<void> deleteItem(int index) async {
+    // remove item at index
     final cartItems = await getItems();
-
     cartItems.removeAt(index);
 
     // encode it back
@@ -51,7 +51,7 @@ class CartCacheImpl implements ICartCache {
 
     // remove product id
     final productIdsEncoded = box.read(Product.key);
-    final productIds = jsonDecode(productIdsEncoded) as List<int>;
+    final productIds = List<int>.from(jsonDecode(productIdsEncoded));
     productIds.removeAt(index);
     box.write(Product.key, jsonEncode(productIds));
   }
@@ -76,5 +76,16 @@ class CartCacheImpl implements ICartCache {
     }
 
     return [];
+  }
+
+  @override
+  Future<void> updateItem(int index, CartItem cartItem) async {
+    // replace item with one from parameter
+    final cartItems = await getItems();
+    cartItems[index] = cartItem;
+
+    // encode it back
+    final cartItemMaps = cartItems.map((e) => e.toMap()).toList();
+    box.write(CartItem.keyList, jsonEncode(cartItemMaps));
   }
 }

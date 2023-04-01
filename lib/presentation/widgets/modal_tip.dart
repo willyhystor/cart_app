@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ModalTip extends StatelessWidget {
+  const ModalTip({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -10,4 +10,6 @@ const Map<String, String> en_US = {
   'filter_min_price': 'Min Price',
   'filter_reset': 'Reset filter',
   'apply': 'Apply',
+  'cart_empty': 'You have no item in your cart',
+  'browse_more': 'Browse more'
 };
