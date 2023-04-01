@@ -1,4 +1,7 @@
+import 'package:cart_app/routes/app_pages.dart';
+import 'package:cart_app/translations/app_translation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +12,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      translations: AppTranslation(),
+      locale: AppTranslation.locale,
+      fallbackLocale: AppTranslation.fallbackLocale,
+      initialRoute: AppPages.initial,
+      getPages: AppPages.routes,
     );
   }
 }

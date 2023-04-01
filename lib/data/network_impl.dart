@@ -1,7 +1,8 @@
-import 'package:cart_app/src/config/global_variables.dart';
+import 'package:cart_app/domain/interfaces/network.dart';
+import 'package:cart_app/shared/global_variables.dart';
 import 'package:dio/dio.dart';
 
-class Network {
+class NetworkImpl implements INetwork {
   late Dio _dio;
 
   void init() {
@@ -33,6 +34,7 @@ class Network {
       );
   }
 
+  @override
   Future<dynamic> request({
     required String url,
     required Method method,
@@ -46,7 +48,7 @@ class Network {
     try {
       response = await _dio.get(url);
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return response;
       } else {
         throw Exception(response);
