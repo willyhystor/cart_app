@@ -10,14 +10,33 @@ class CartCacheImpl implements ICartCache {
 
   @override
   Future<void> addItem(Product product) async {
-    final cartItems = await getItems();
+    final productIdsEncoded = box.read(Product.key);
 
-    // add new product
-    cartItems.add(CartItem(product: product, quantity: 1));
+    List<int> productIds = [];
+    if (productIdsEncoded != null) {
+      productIds = List<int>.from(jsonDecode(productIdsEncoded));
+    }
 
-    // encode it back
-    final cartItemMaps = cartItems.map((e) => e.toMap()).toList();
-    box.write(CartItem.keyList, jsonEncode(cartItemMaps));
+    // If ids empty or
+    // ids does not contain product id
+    if (!productIds.contains(product.id)) {
+      // get current items
+      final cartItems = await getItems();
+
+      // add new product as item
+      cartItems.add(CartItem(
+        product: product,
+        quantity: 1,
+      ));
+
+      // encode it back
+      final cartItemMaps = cartItems.map((e) => e.toMap()).toList();
+      box.write(CartItem.keyList, jsonEncode(cartItemMaps));
+
+      // add new product id to ids
+      productIds.add(product.id);
+      box.write(Product.key, jsonEncode(productIds));
+    }
   }
 
   @override
@@ -29,20 +48,33 @@ class CartCacheImpl implements ICartCache {
     // encode it back
     final cartItemMaps = cartItems.map((e) => e.toMap()).toList();
     box.write(CartItem.keyList, jsonEncode(cartItemMaps));
+
+    // remove product id
+    final productIdsEncoded = box.read(Product.key);
+    final productIds = jsonDecode(productIdsEncoded) as List<int>;
+    productIds.removeAt(index);
+    box.write(Product.key, jsonEncode(productIds));
   }
 
   @override
   Future<List<CartItem>> getItems() async {
     final cartItemsEncoded = box.read(CartItem.keyList);
-    final cartItemMaps = jsonDecode(cartItemsEncoded);
-    final cartItems = <CartItem>[];
 
-    // reconstruct map to list of object
-    for (final map in cartItemMaps) {
-      cartItems.add(CartItem(
-          product: map[Product.key], quantity: map[CartItem.keyQuantity]));
+    if (cartItemsEncoded != null) {
+      final cartItemMaps = jsonDecode(cartItemsEncoded);
+      final cartItems = <CartItem>[];
+
+      // reconstruct map to list of object
+      for (final map in cartItemMaps) {
+        cartItems.add(CartItem(
+          product: Product.fromMap(map[Product.key]),
+          quantity: map[CartItem.keyQuantity],
+        ));
+      }
+
+      return cartItems;
     }
 
-    return cartItems;
+    return [];
   }
 }

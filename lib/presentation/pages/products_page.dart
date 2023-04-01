@@ -107,7 +107,10 @@ class ProductsPage extends GetView<ProductsController> {
                             backgroundColor:
                                 MaterialStatePropertyAll(Colors.blue),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            controller.addProductToCart(
+                                controller.filteredProducts[index]);
+                          },
                           child: Text(
                             'cart_add'.tr,
                             style: const TextStyle(

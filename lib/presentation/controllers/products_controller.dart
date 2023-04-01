@@ -39,8 +39,11 @@ class ProductsController extends GetxController {
     filterProducts();
   }
 
-  void filterProducts() {
+  void filterProducts() async {
     viewStatus.value = ViewStatus.loading;
+
+    // To simulate filter process
+    await Future.delayed(const Duration(milliseconds: 250));
 
     final newProducts =
         _products.where((e) => e.price > minPrice.value).toList();
