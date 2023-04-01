@@ -23,7 +23,11 @@ class ProductsPage extends GetView<ProductsController> {
             ),
             const SizedBox(width: 20),
             GestureDetector(
-              onTap: () => Get.toNamed(AppRoutes.cart),
+              onTap: () async {
+                await Get.toNamed(AppRoutes.cart);
+
+                controller.getCartItems();
+              },
               child: Stack(
                 alignment: Alignment.center,
                 children: [

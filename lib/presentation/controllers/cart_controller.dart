@@ -10,6 +10,7 @@ class CartController extends GetxController {
   // States
   final cartItems = <CartItem>[].obs;
   Rx<ViewStatus> viewStatus = ViewStatus.loading.obs;
+  RxInt totalPrice = 0.obs;
 
   @override
   void onInit() {
@@ -23,6 +24,8 @@ class CartController extends GetxController {
     cartItems.value = [...cartItemsFromCache];
 
     viewStatus.value = ViewStatus.idle;
+
+    calculateTotalPrice();
   }
 
   void addQuantity(int index) async {
@@ -30,7 +33,7 @@ class CartController extends GetxController {
 
     await _cartCache.updateItem(index, cartItems[index]);
 
-    cartItems.value = [...cartItems];
+    getCartItems();
   }
 
   void subsQuantity(int index) async {
@@ -39,7 +42,7 @@ class CartController extends GetxController {
 
       await _cartCache.updateItem(index, cartItems[index]);
 
-      cartItems.value = [...cartItems];
+      getCartItems();
     }
   }
 
@@ -47,5 +50,10 @@ class CartController extends GetxController {
     await _cartCache.deleteItem(index);
 
     getCartItems();
+  }
+
+  void calculateTotalPrice() {
+    totalPrice.value = cartItems.fold(0,
+        (sum, cartItem) => sum + (cartItem.product.price * cartItem.quantity));
   }
 }

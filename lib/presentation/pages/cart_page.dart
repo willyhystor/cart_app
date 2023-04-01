@@ -59,28 +59,43 @@ class CartPage extends GetView<CartController> {
           ),
         ),
         Container(
-          height: 60,
-          width: Get.width,
+          height: 80,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-          child: TextButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '${'total'.tr}: \$ ${usCurrency.format(controller.totalPrice.value)}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              backgroundColor: MaterialStateProperty.all<Color>(
-                Colors.blue,
+              SizedBox(
+                width: Get.width,
+                child: TextButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.blue,
+                    ),
+                  ),
+                  child: Text(
+                    'checkout'.tr,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            child: Text(
-              'checkout'.tr,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            ],
           ),
         ),
       ],
